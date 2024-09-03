@@ -6,7 +6,7 @@
         "display": "standalone",
         "background_color": "#ffffff",
         "theme_color": "#000000",
-        "description": "Application Flèche, notification d'évènement locale",
+        "description": "Application Flèche, notification d'évènements locaux",
         "icons": [
                 {
                         "src": "/icon-192x192.png",

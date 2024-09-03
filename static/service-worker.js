@@ -30,18 +30,14 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-        // Vérifier si la requête est une requête GET et si l'URL est valide pour la mise en cache
-        if (event.request.method === "GET" && !event.request.url.startsWith("chrome-extension://")) {
+        if (event.request.method === "GET") {
                 event.respondWith(
-                        caches.open("my-cache").then((cache) => {
+                        caches.open(CACHE_NAME).then((cache) => {
                                 return cache.match(event.request).then((response) => {
                                         return (
                                                 response ||
                                                 fetch(event.request).then((response) => {
-                                                        // Cache the response if it's a valid request
-                                                        if (event.request.method === "GET") {
-                                                                cache.put(event.request, response.clone());
-                                                        }
+                                                        cache.put(event.request, response.clone());
                                                         return response;
                                                 })
                                         );

@@ -5,7 +5,7 @@ import { initializeAnalytics, isSupported as isAnalyticsSupported } from "fireba
 
 // Configuration Firebase
 const firebaseConfig = {
-        apiKey: "AIzaSyClaX4ZMxQ2nVrnXCa5G0Ej6sSszhfDI_Y",
+        apiKey: "AIzaSyAKcdwYEmG5yDgq9FDPv5daB5VxdKHcZPc",
         authDomain: "bddtest-6a03f.firebaseapp.com",
         projectId: "bddtest-6a03f",
         storageBucket: "bddtest-6a03f.appspot.com",
@@ -13,7 +13,6 @@ const firebaseConfig = {
         appId: "1:78035008130:web:471cacd24cb8a7f2bed29b",
         measurementId: "G-4FNYWSXMZG",
 };
-
 // Initialiser Firebase App
 const app = initializeApp(firebaseConfig);
 
@@ -54,7 +53,7 @@ const requestNotificationPermission = async (messaging) => {
                         console.log("Notification permission granted.");
 
                         const token = await getToken(messaging, {
-                                vapidKey: "BD0cwBcx6BKzy2bj8RpbKjahe0JitVkxFXfy8daVTERcxVPGDfTx0fzlcNz3MFdAPT5CEw-dQ8ed835JgVny3uo",
+                                vapidKey: "",
                         });
 
                         console.log("Notification token:", token);
