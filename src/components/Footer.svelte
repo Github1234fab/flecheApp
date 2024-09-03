@@ -1,0 +1,17 @@
+
+<footer>
+<h1>Footer</h1>
+</footer>
+
+<style>
+
+        footer {
+                background-color: #333;
+                color: white;
+                text-align: center;
+                padding: 1rem;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+        }
+</style>
