@@ -1,0 +1,46 @@
+{
+        "id": "/",
+        "name": "Flèche",
+        "short_name": "Flèche",
+        "start_url": "/",
+        "display": "standalone",
+        "background_color": "#ffffff",
+        "theme_color": "#000000",
+        "description": "Application Flèche, notification d'évènement locale",
+        "icons": [
+                {
+                        "src": "/icon-192x192.png",
+                        "sizes": "192x192",
+                        "type": "image/png"
+                },
+                {
+                        "src": "/icon-512x512.png",
+                        "sizes": "512x512",
+                        "type": "image/png"
+                }
+        ],
+        "screenshots": [
+                {
+                        "src": "/screenShot.png",
+                        "sizes": "1240x613",
+                        "type": "image/png",
+                        "form_factor": "wide"
+                },
+                {
+                        "src": "/screenshotMobile.png",
+                        "sizes": "1280x720",
+                        "type": "image/png",
+                        "form_factor": "wide"
+                },
+                {
+                        "src": "/screenShot.png",
+                        "sizes": "1240x613",
+                        "type": "image/png"
+                },
+                {
+                        "src": "/screenshotMobile.png",
+                        "sizes": "1280x720",
+                        "type": "image/png"
+                }
+        ]
+}
