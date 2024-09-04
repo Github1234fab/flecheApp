@@ -11,7 +11,6 @@ const firebaseConfig = {
         measurementId: "G-LVMXH11ESZ",
 };
 
-
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
