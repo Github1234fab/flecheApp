@@ -5,14 +5,17 @@ import { initializeAnalytics, isSupported as isAnalyticsSupported } from "fireba
 
 // Configuration Firebase
 const firebaseConfig = {
-        apiKey: "AIzaSyAKcdwYEmG5yDgq9FDPv5daB5VxdKHcZPc",
-        authDomain: "bddtest-6a03f.firebaseapp.com",
-        projectId: "bddtest-6a03f",
-        storageBucket: "bddtest-6a03f.appspot.com",
-        messagingSenderId: "78035008130",
-        appId: "1:78035008130:web:471cacd24cb8a7f2bed29b",
-        measurementId: "G-4FNYWSXMZG",
+        apiKey: "AIzaSyAEwpAek6JuWKBWxCZRWHIpJpFtLmngzLE",
+        authDomain: "bddjson.firebaseapp.com",
+        projectId: "bddjson",
+        storageBucket: "bddjson.appspot.com",
+        messagingSenderId: "797023585100",
+        appId: "1:797023585100:web:027f9c5c56324e9fa885e9",
+        measurementId: "G-LVMXH11ESZ",
 };
+
+
+
 // Initialiser Firebase App
 const app = initializeApp(firebaseConfig);
 
@@ -39,7 +42,15 @@ export const initMessaging = () => {
                 // Gestion des messages reçus lorsque l'application est au premier plan
                 onMessage(messaging, (payload) => {
                         console.log("Message received. ", payload);
-                        // Personnalisez la notification ici
+                        // Vous pouvez personnaliser ici comment afficher la notification
+                        const notificationTitle = payload.notification.title || "Default Title";
+                        const notificationOptions = {
+                                body: payload.notification.body || "Default Body",
+                                icon: payload.notification.icon || "/icon-192x192.png",
+                                image: payload.notification.image,
+                        };
+
+                        new Notification(notificationTitle, notificationOptions);
                 });
         }
 };
@@ -53,7 +64,7 @@ const requestNotificationPermission = async (messaging) => {
                         console.log("Notification permission granted.");
 
                         const token = await getToken(messaging, {
-                                vapidKey: "",
+                                vapidKey: "BEUciyC870MQL1OE-SKilJS_lKV_ZBNXsuoo4FtojJhTpLaMbM0Tik18syIMwEGmmNMymQ9Sf1BgMIEWc8-liOg",
                         });
 
                         console.log("Notification token:", token);

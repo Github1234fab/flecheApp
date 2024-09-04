@@ -6,7 +6,7 @@
 
         async function fetchJsonData() {
                 try {
-                        const jsonDataCollection = collection(db, "fleche-json");
+                        const jsonDataCollection = collection(db, "BDDjson");
 
                         const querySnapshot = await getDocs(jsonDataCollection);
                         let tempJsonDataByDate = {}; // Utiliser une variable temporaire pour stocker les données

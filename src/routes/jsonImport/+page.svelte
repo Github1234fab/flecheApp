@@ -1,5 +1,5 @@
 <script>
-  import { db } from '../lib/firebase.js'; // Assurez-vous que le chemin est correct
+  import { db } from '../../lib/firebase.js'; // Assurez-vous que le chemin est correct
   import { collection, doc, writeBatch } from 'firebase/firestore';
 
   let file;
@@ -18,13 +18,19 @@
     const reader = new FileReader();
     reader.onload = async (e) => {
       try {
-        console.log('File content:', e.target.result);
-        const data = JSON.parse(e.target.result);
+        const fileContent = e.target.result;
+        console.log('File content:', fileContent);
+        const data = JSON.parse(fileContent);
         console.log('Parsed data:', data);
 
         const batch = writeBatch(db);
         data.forEach((docData) => {
-          const docRef = doc(collection(db, 'BDDjson'), docData.id);
+          // Convert fields to correct types if necessary
+          if (typeof docData.id === 'string' && !isNaN(docData.id)) {
+            docData.id = Number(docData.id); // Ensure id is a number
+          }
+          console.log('Processing document:', docData);
+          const docRef = doc(collection(db, 'BDDjson'), docData.id.toString()); // Firestore requires document IDs to be strings
           batch.set(docRef, docData);
         });
 
@@ -42,3 +48,5 @@
 
 <input type="file" accept=".json" on:change={handleFileChange} />
 <button on:click={handleFileUpload}>Upload and Import JSON</button>
+
+

@@ -1,6 +1,6 @@
 // Configuration du cache
 const CACHE_NAME = "flech-cache-v3";
-const urlsToCache = ["/",  "/icon-192x192.png", "/icon-512x512.png", "/manifest.json"];
+const urlsToCache = ["/", "/icon-192x192.png", "/icon-512x512.png", "/manifest.json"];
 
 self.addEventListener("install", (event) => {
         console.log("Service Worker installing.");
@@ -45,7 +45,6 @@ self.addEventListener("fetch", (event) => {
                         })
                 );
         } else {
-                // Pour les autres requêtes, laissez le fetch passer normalement
                 event.respondWith(fetch(event.request));
         }
 });
