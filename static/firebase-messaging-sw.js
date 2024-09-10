@@ -30,7 +30,6 @@
 
 
 
-
 importScripts("https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js");
 
@@ -60,21 +59,6 @@ messaging.onBackgroundMessage((payload) => {
         };
 
         self.registration.showNotification(notificationTitle, notificationOptions);
-});
-
-// Gestion des notifications push génériques
-self.addEventListener("push", (event) => {
-        console.log("Push event received:", event);
-
-        const data = event.data.json();
-        const title = data.notification.title || "Notification";
-        const options = {
-                body: data.notification.body,
-                icon: data.notification.icon,
-                data: data.data, // Ajoutez des données supplémentaires si nécessaire
-        };
-
-        event.waitUntil(self.registration.showNotification(title, options));
 });
 
 // Gestion du clic sur une notification
