@@ -15,11 +15,11 @@ onMount(() => {
         // Vérifier si la pop-up de mise à jour a déjà été montrée
         const updatePromptShown = localStorage.getItem("updatePromptShown") === "true";
 
-        // Enregistrement du service worker principal
+        // Enregistrement du service worker pour le cache, les mises à jour et Firebase Cloud Messaging
         navigator.serviceWorker
-            .register("/firebase-messaging-sw.js")
+            .register("/firebase-messaging-sw.js") // Un seul fichier pour tout gérer
             .then((registration) => {
-                console.log("Service Worker principal enregistré avec succès");
+                console.log("Service Worker enregistré avec succès");
 
                 // Vérifier les mises à jour du Service Worker
                 registration.onupdatefound = () => {
@@ -32,7 +32,7 @@ onMount(() => {
                                     localStorage.setItem("updatePromptShown", "true");
 
                                     const userConfirmed = confirm(
-                                        "Une nouvelle version de l'application est disponible. Voulez-vous  l'utiliser?"
+                                        "Une nouvelle version de l'application est disponible. Voulez-vous l'utiliser?"
                                     );
 
                                     if (userConfirmed) {
@@ -58,19 +58,7 @@ onMount(() => {
                 });
             })
             .catch((error) => {
-                console.error("Erreur lors de l'enregistrement du Service Worker principal:", error);
-            });
-
-        // Enregistrement du service worker pour Firebase Cloud Messaging
-        navigator.serviceWorker
-            .register("/firebase-messaging-sw.js") // Utilisation du fichier bundlé
-            .then((registration) => {
-                console.log("Service Worker Firebase enregistré avec succès");
-
-                // Vérifiez les mises à jour et autres fonctionnalités spécifiques à Firebase si nécessaire
-            })
-            .catch((error) => {
-                console.error("Erreur lors de l'enregistrement du Service Worker Firebase:", error);
+                console.error("Erreur lors de l'enregistrement du Service Worker :", error);
             });
     }
 });
