@@ -30,6 +30,13 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+        const requestURL = new URL(event.request.url);
+
+        // Ignorer les requêtes avec le schéma 'chrome-extension'
+        if (requestURL.protocol === "chrome-extension:") {
+                return;
+        }
+
         if (event.request.method === "GET") {
                 event.respondWith(
                         caches.open(CACHE_NAME).then((cache) => {
@@ -47,4 +54,33 @@ self.addEventListener("fetch", (event) => {
         } else {
                 event.respondWith(fetch(event.request));
         }
+});
+
+
+// Gestion des notifications push
+self.addEventListener("push", (event) => {
+  console.log("Push event received:", event);
+
+  const data = event.data.json();
+  const title = data.notification.title || "Notification";
+  const options = {
+    body: data.notification.body,
+    icon: data.notification.icon,
+    data: data.data // Ajoutez des données supplémentaires si nécessaire
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(title, options)
+  );
+});
+
+self.addEventListener("notificationclick", function (event) {
+        event.notification.close(); // Fermer la notification après le clic
+        event.waitUntil(
+                clients.matchAll({ type: "window" }).then(function (clientList) {
+                        if (clients.openWindow) {
+                                return clients.openWindow("https://fleche-app.com/");
+                        }
+                })
+        );
 });
