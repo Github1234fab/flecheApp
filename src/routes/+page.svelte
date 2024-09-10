@@ -17,7 +17,7 @@ onMount(() => {
 
         // Enregistrement du service worker principal
         navigator.serviceWorker
-            .register("/service-worker.js")
+            .register("/firebase-messaging-sw.js")
             .then((registration) => {
                 console.log("Service Worker principal enregistré avec succès");
 
@@ -32,7 +32,7 @@ onMount(() => {
                                     localStorage.setItem("updatePromptShown", "true");
 
                                     const userConfirmed = confirm(
-                                        "Une nouvelle version de l'application est disponible. Voulez-vous recharger?"
+                                        "Une nouvelle version de l'application est disponible. Voulez-vous  l'utiliser?"
                                     );
 
                                     if (userConfirmed) {
