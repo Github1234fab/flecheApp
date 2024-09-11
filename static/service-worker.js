@@ -1,4 +1,3 @@
-// Configuration du cache
 const CACHE_NAME = "flech-cache-v3";
 const urlsToCache = ["/", "/flecheApp/src/app.html", "/icon-192x192.png", "/icon-512x512.png", "/manifest.json"];
 
@@ -6,7 +5,7 @@ self.addEventListener("install", (event) => {
         console.log("Service Worker installing.");
         event.waitUntil(
                 caches.open(CACHE_NAME).then((cache) => {
-                        console.log("Opened cache");
+                        console.log("Cache ouvert");
                         return cache.addAll(urlsToCache);
                 })
         );
@@ -30,53 +29,39 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-        const requestURL = new URL(event.request.url);
-
-        // Ignorer les requêtes avec le schéma 'chrome-extension'
-        if (requestURL.protocol === "chrome-extension:") {
-                return;
-        }
-
         if (event.request.method === "GET") {
                 event.respondWith(
-                        caches.open(CACHE_NAME).then((cache) => {
-                                return cache.match(event.request).then((response) => {
-                                        return (
-                                                response ||
-                                                fetch(event.request).then((response) => {
-                                                        cache.put(event.request, response.clone());
-                                                        return response;
-                                                })
-                                        );
-                                });
+                        caches.match(event.request).then((response) => {
+                                return (
+                                        response ||
+                                        fetch(event.request).then((fetchResponse) => {
+                                                return caches.open(CACHE_NAME).then((cache) => {
+                                                        cache.put(event.request, fetchResponse.clone());
+                                                        return fetchResponse;
+                                                });
+                                        })
+                                );
                         })
                 );
-        } else {
-                event.respondWith(fetch(event.request));
         }
 });
 
 // Gestion des notifications push
 self.addEventListener("push", (event) => {
-  console.log("Push event received:", event);
+        const data = event.data.json();
+        const title = data.notification.title || "Notification";
+        const options = {
+                body: data.notification.body,
+                icon: data.notification.icon || "/icon-192x192.png",
+        };
 
-  const data = event.data.json();
-  const title = data.notification.title || "Notification";
-  const options = {
-    body: data.notification.body,
-    icon: data.notification.icon,
-    data: data.data // Ajoutez des données supplémentaires si nécessaire
-  };
-
-  event.waitUntil(
-    self.registration.showNotification(title, options)
-  );
+        event.waitUntil(self.registration.showNotification(title, options));
 });
 
-self.addEventListener("notificationclick", function (event) {
-        event.notification.close(); // Fermer la notification après le clic
+self.addEventListener("notificationclick", (event) => {
+        event.notification.close();
         event.waitUntil(
-                clients.matchAll({ type: "window" }).then(function (clientList) {
+                clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
                         if (clients.openWindow) {
                                 return clients.openWindow("https://fleche-app.com/");
                         }

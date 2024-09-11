@@ -12,41 +12,28 @@
                 initMessaging();
 
                 if ("serviceWorker" in navigator) {
-                        // Vérifier si la pop-up de mise à jour a déjà été montrée
                         const updatePromptShown = localStorage.getItem("updatePromptShown") === "true";
 
-                        // Enregistrement du service worker pour le cache, les mises à jour et Firebase Cloud Messaging
                         navigator.serviceWorker
-                                .register("/firebase-messaging-sw.js") // Un seul fichier pour tout gérer
+                                .register("/firebase-messaging-sw.js")
                                 .then((registration) => {
                                         console.log("Service Worker enregistré avec succès");
 
-                                        // Vérifier les mises à jour du Service Worker
                                         registration.onupdatefound = () => {
                                                 const installingWorker = registration.installing;
                                                 if (installingWorker) {
                                                         installingWorker.onstatechange = () => {
-                                                                if (installingWorker.state === "installed") {
-                                                                        if (navigator.serviceWorker.controller && !updatePromptShown) {
-                                                                                // Enregistrer que la pop-up a été montrée
-                                                                                localStorage.setItem("updatePromptShown", "true");
-
-                                                                                const userConfirmed = confirm("Une nouvelle version de l'application est disponible. Voulez-vous l'utiliser?");
-
-                                                                                if (userConfirmed) {
-                                                                                        window.location.reload();
-                                                                                } else {
-                                                                                        console.log("L'utilisateur a choisi de ne pas recharger.");
-                                                                                }
-                                                                        } else if (!navigator.serviceWorker.controller) {
-                                                                                console.log("Service Worker installé pour la première fois.");
+                                                                if (installingWorker.state === "installed" && navigator.serviceWorker.controller && !updatePromptShown) {
+                                                                        localStorage.setItem("updatePromptShown", "true");
+                                                                        const userConfirmed = confirm("Une nouvelle version de l'application est disponible. Voulez-vous l'utiliser ?");
+                                                                        if (userConfirmed) {
+                                                                                window.location.reload();
                                                                         }
                                                                 }
                                                         };
                                                 }
                                         };
 
-                                        // Demander la permission pour les notifications
                                         Notification.requestPermission().then((permission) => {
                                                 if (permission === "granted") {
                                                         console.log("Permission de notification accordée.");

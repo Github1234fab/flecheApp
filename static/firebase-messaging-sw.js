@@ -14,14 +14,15 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
+// Gérer les notifications en arrière-plan
 messaging.onBackgroundMessage((payload) => {
-        console.log("Received background message ", payload);
+        console.log("Message reçu en arrière-plan:", payload);
 
-        const notificationTitle = payload.notification.title || "Default Title";
+        const notificationTitle = payload.notification?.title || "Titre par défaut";
         const notificationOptions = {
-                body: payload.notification.body || "Default Body",
-                icon: payload.notification.icon || "/icon-192x192.png",
-                image: payload.notification.image,
+                body: payload.notification?.body || "Corps du message par défaut",
+                icon: payload.notification?.icon || "/icon-192x192.png",
+                image: payload.notification?.image,
         };
 
         self.registration.showNotification(notificationTitle, notificationOptions);
