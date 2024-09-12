@@ -4,6 +4,7 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { initializeAnalytics, isSupported as isAnalyticsSupported } from "firebase/analytics";
 
 // Configuration Firebase
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
         apiKey: "AIzaSyAEwpAek6JuWKBWxCZRWHIpJpFtLmngzLE",
         authDomain: "bddjson.firebaseapp.com",
@@ -13,7 +14,6 @@ const firebaseConfig = {
         appId: "1:797023585100:web:027f9c5c56324e9fa885e9",
         measurementId: "G-LVMXH11ESZ",
 };
-
 // Initialiser Firebase App
 const app = initializeApp(firebaseConfig);
 
@@ -29,6 +29,26 @@ export const initAnalytics = async () => {
 
 // Initialiser Firestore
 export const db = getFirestore(app);
+
+// Fonction pour sauvegarder le token sur le serveur
+const saveTokenToServer = async (token) => {
+        try {
+                const response = await fetch("/api/save-token", {
+                        method: "POST",
+                        headers: {
+                                "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ token }),
+                });
+                if (response.ok) {
+                        console.log("Token enregistré avec succès sur le serveur.");
+                } else {
+                        console.error("Erreur lors de l'enregistrement du token sur le serveur.");
+                }
+        } catch (error) {
+                console.error("Erreur lors de l'appel API:", error);
+        }
+};
 
 // Initialiser Firebase Cloud Messaging uniquement côté client
 export const initMessaging = () => {
@@ -68,7 +88,7 @@ const requestNotificationPermission = async (messaging) => {
                         console.log("Notification token:", token);
 
                         // TODO: Envoyer ce token à votre serveur pour stockage et utilisation
-                        // await saveTokenToServer(token);
+                        await saveTokenToServer(token);
                 } else {
                         console.log("Notification permission denied.");
                 }
