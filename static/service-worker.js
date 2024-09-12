@@ -1,6 +1,7 @@
 const CACHE_NAME = "flech-cache-v3";
 const urlsToCache = ["/", "/flecheApp/src/app.html", "/icon-192x192.png", "/icon-512x512.png", "/manifest.json"];
 
+// Installer le service worker et mettre en cache les fichiers nécessaires
 self.addEventListener("install", (event) => {
         console.log("Service Worker installing.");
         event.waitUntil(
@@ -12,6 +13,7 @@ self.addEventListener("install", (event) => {
         self.skipWaiting();
 });
 
+// Activer le service worker et supprimer les anciens caches
 self.addEventListener("activate", (event) => {
         console.log("Service Worker activating.");
         event.waitUntil(
@@ -28,6 +30,7 @@ self.addEventListener("activate", (event) => {
         self.clients.claim();
 });
 
+// Intercepter les requêtes et servir les fichiers à partir du cache lorsque disponible
 self.addEventListener("fetch", (event) => {
         if (event.request.method === "GET") {
                 event.respondWith(
@@ -44,27 +47,4 @@ self.addEventListener("fetch", (event) => {
                         })
                 );
         }
-});
-
-// Gestion des notifications push
-self.addEventListener("push", (event) => {
-        const data = event.data.json();
-        const title = data.notification.title || "Notification";
-        const options = {
-                body: data.notification.body,
-                icon: data.notification.icon || "/icon-192x192.png",
-        };
-
-        event.waitUntil(self.registration.showNotification(title, options));
-});
-
-self.addEventListener("notificationclick", (event) => {
-        event.notification.close();
-        event.waitUntil(
-                clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
-                        if (clients.openWindow) {
-                                return clients.openWindow("https://fleche-app.com/");
-                        }
-                })
-        );
 });

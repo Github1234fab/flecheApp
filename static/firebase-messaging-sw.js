@@ -1,6 +1,7 @@
-importScripts("https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js");
-importScripts("https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging.js");
 
+// Configuration Firebase (Ne pas réinitialiser ici, utiliser les scripts importés)
 const firebaseConfig = {
         apiKey: "AIzaSyAEwpAek6JuWKBWxCZRWHIpJpFtLmngzLE",
         authDomain: "bddjson.firebaseapp.com",
@@ -11,19 +12,31 @@ const firebaseConfig = {
         measurementId: "G-LVMXH11ESZ",
 };
 
-firebase.initializeApp(firebaseConfig);
+// Ne pas initialiser Firebase ici
+// firebase.initializeApp(firebaseConfig);
+
 const messaging = firebase.messaging();
 
-// Gérer les notifications en arrière-plan
+// Gestion des notifications push
 messaging.onBackgroundMessage((payload) => {
-        console.log("Message reçu en arrière-plan:", payload);
-
-        const notificationTitle = payload.notification?.title || "Titre par défaut";
-        const notificationOptions = {
-                body: payload.notification?.body || "Corps du message par défaut",
-                icon: payload.notification?.icon || "/icon-192x192.png",
-                image: payload.notification?.image,
+        console.log("Message received in background. ", payload);
+        const { title, body, icon } = payload.notification;
+        const options = {
+                body: body || "Default Body",
+                icon: icon || "/icon-192x192.png",
         };
 
-        self.registration.showNotification(notificationTitle, notificationOptions);
+        self.registration.showNotification(title || "Notification", options);
+});
+
+// Gestion des clics sur les notifications
+self.addEventListener("notificationclick", (event) => {
+        event.notification.close();
+        event.waitUntil(
+                clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+                        if (clients.openWindow) {
+                                return clients.openWindow("https://fleche-app.com/");
+                        }
+                })
+        );
 });
