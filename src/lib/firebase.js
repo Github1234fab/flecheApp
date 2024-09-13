@@ -79,7 +79,7 @@ export const initMessaging = () => {
 };
 
 // Fonction pour demander la permission de notification
-const requestNotificationPermission = async (messaging) => {
+export const requestNotificationPermission = async (messaging) => {
         try {
                 console.log("Demande de permission pour les notifications...");
                 const permission = await Notification.requestPermission();
