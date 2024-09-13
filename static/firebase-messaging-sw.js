@@ -13,7 +13,7 @@ const firebaseConfig = {
 };
 
 // Ne pas initialiser Firebase ici
-// firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 const messaging = firebase.messaging();
 
