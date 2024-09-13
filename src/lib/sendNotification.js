@@ -1,5 +1,5 @@
 export const sendNotification = async (deviceToken) => {
-        const browserKey = "AIzaSyAEwpAek6JuWKBWxCZRWHIpJpFtLmngzLE";
+        const browserKey = "BEUciyC870MQL1OE-SKilJS_lKV_ZBNXsuoo4FtojJhTpLaMbM0Tik18syIMwEGmmNMymQ9Sf1BgMIEWc8-liOg";
         const url = "https://fcm.googleapis.com/fcm/send";
 
         const payload = {

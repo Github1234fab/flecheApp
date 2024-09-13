@@ -65,14 +65,15 @@ export const initMessaging = () => {
                 // Gestion des messages reçus lorsque l'application est au premier plan
                 onMessage(messaging, (payload) => {
                         console.log("Message reçu: ", payload);
-                        // Vous pouvez personnaliser ici comment afficher la notification
                         const notificationTitle = payload.notification.title || "Default Title";
                         const notificationOptions = {
                                 body: payload.notification.body || "Default Body",
                                 icon: payload.notification.icon || "/icon-192x192.png",
                                 image: payload.notification.image,
+                                data: payload.data, // pour potentiellement gérer une URL ou autres actions
                         };
 
+                        // Afficher la notification dans l'application elle-même
                         new Notification(notificationTitle, notificationOptions);
                 });
         }
@@ -90,10 +91,13 @@ export const requestNotificationPermission = async (messaging) => {
                                 vapidKey: "BEUciyC870MQL1OE-SKilJS_lKV_ZBNXsuoo4FtojJhTpLaMbM0Tik18syIMwEGmmNMymQ9Sf1BgMIEWc8-liOg",
                         });
 
-                        console.log("Token de notification:", token);
-
-                        // Envoyer ce token à votre serveur pour stockage et utilisation
-                        await saveTokenToServer(token);
+                        if (token) {
+                                console.log("Token de notification:", token);
+                                // Envoyer ce token à votre serveur pour stockage et utilisation
+                                await saveTokenToServer(token);
+                        } else {
+                                console.error("Échec de la récupération du token.");
+                        }
                 } else {
                         console.log("Permission de notification refusée.");
                 }
@@ -102,7 +106,4 @@ export const requestNotificationPermission = async (messaging) => {
         }
 };
 
-// Appeler cette fonction uniquement côté client pour initialiser Firebase Messaging
-if (typeof window !== "undefined") {
-        initMessaging();
-}
+// Ne plus appeler initMessaging ici pour éviter la double initialisation
