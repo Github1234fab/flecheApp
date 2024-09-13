@@ -12,7 +12,7 @@
         <div class="wrapper-header">
                 <a href="/">
                 <img class="logo" src={Flèche} alt="Logo" /></a>
-                <h1>Ton alliée, pour ne rien manquer !</h1>
+                <!-- <h1></h1> -->
                 <button on:click={openCloseMenu}>
                         <img class="svg-menu" src={svgMenu} alt="Menu" />
                 </button>
@@ -80,11 +80,11 @@
                 background-color: rgb(211, 211, 213);
         }
 
-        h1 {
+        /* h1 {
                 font-size: 0.9rem;
                 padding: 10px;
                 font-weight: 500;
-        }
+        } */
         a {
                 text-decoration: none;
                 color: #c71585;
