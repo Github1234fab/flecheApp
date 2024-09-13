@@ -1,5 +1,5 @@
-importScripts("https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging.js");
+importScripts("https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js");
 
 // Configuration Firebase (Ne pas réinitialiser ici, utiliser les scripts importés)
 const firebaseConfig = {
@@ -27,6 +27,20 @@ messaging.onBackgroundMessage((payload) => {
         };
 
         self.registration.showNotification(title || "Notification", options);
+});
+
+
+self.addEventListener("push", function (event) {
+        const payload = event.data.json();
+        const title = payload.notification.title || "Notification";
+        const options = {
+                body: payload.notification.body,
+                icon: payload.notification.icon,
+                image: payload.notification.image, // si vous envoyez une image
+                data: payload.data, // Utilisé pour les actions personnalisées ou ouvrir une URL
+        };
+
+        event.waitUntil(self.registration.showNotification(title, options));
 });
 
 // Gestion des clics sur les notifications
